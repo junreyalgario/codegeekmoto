@@ -25,5 +25,5 @@ jobs:
         username: ${{ env.SERVER_USERNAME }}
         key: ${{ env.SSH_PRIVATE_KEY }}
         script: |
-          cd /var/www/html
+          cd /var/www/blog
           git pull origin main
