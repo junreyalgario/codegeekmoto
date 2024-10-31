@@ -1,0 +1,29 @@
+name: Auto pull to production server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      SERVER_HOST: ${{ secrets.SERVER_HOST }}
+      SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: SSH into production server and pull changes
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.SERVER_HOST }}
+        username: ${{ env.SERVER_USERNAME }}
+        key: ${{ env.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/html
+          git pull origin main
